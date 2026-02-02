@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller - Food Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body>
+    <div class="seller-app">
+        <!-- Header -->
+        <header class="seller-header">
+            <div class="header-left">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="store-info">
+                    <div class="store-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div>
+                        <h2>My Food Store</h2>
+                        <p class="store-subtitle">
+                            <span class="badge active">OPEN</span>
+                            <!-- REMOVED: 0 customers online -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <button class="header-action" title="Orders">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span class="badge order-count">0</span>
+                </button>
+                <button class="header-action" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="header-action" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="seller-main">
+            <!-- Chat Section -->
+            <section class="chat-section">
+                <div class="chat-header">
+                    <div class="customer-info">
+                        <div class="customer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h3>Customer</h3>
+                            <p class="customer-status">
+                                <span class="status-dot online"></span>
+                                <span id="customerStatus">Online</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="messages-container" id="sellerMessages">
+                    <!-- Messages will appear here -->
+                    <div class="welcome-message">
+                        <div class="welcome-bubble">
+                            <i class="fas fa-comments welcome-icon"></i>
+                            <h3>Chat with Customers</h3>
+                            <p>Use quick replies below to send food recommendations instantly!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seller Input -->
+                <div class="seller-input">
+                    <div class="input-container">
+                        <input type="text" 
+                               id="sellerInput" 
+                               placeholder="Type reply to customer..." 
+                               autocomplete="off">
+                        <button class="send-btn" id="sellerSendBtn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Quick Actions Sidebar -->
+            <aside class="seller-sidebar">
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-bolt"></i> Quick Replies</h3>
+                    <div class="quick-reply-grid">
+                        <button class="quick-reply-btn" data-type="greeting">
+                            <i class="fas fa-hand-wave"></i>
+                            <span>Welcome greeting</span>
+                        </button>
+                        <button class="quick-reply-btn" data-type="menu">
+                            <i class="fas fa-book"></i>
+                            <span>Send full menu</span>
+                        </button>
+                        <button class="quick-reply-btn" data-type="busy">
+                            <i class="fas fa-clock"></i>
+                            <span>Busy hours notice</span>
+                        </button>
+                        <button class="quick-reply-btn" data-type="thanks">
+                            <i class="fas fa-heart"></i>
+                            <span>Thank you message</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-utensils"></i> Food Recommendations</h3>
+                    <div class="food-buttons">
+                        <button class="food-btn highlight" data-food="nasi padang">
+                            <div class="food-icon">🍚</div>
+                            <div class="food-info">
+                                <strong>Nasi Padang</strong>
+                                <small>Padang A, Padang X, Warteg</small>
+                            </div>
+                        </button>
+                        
+                        <button class="food-btn" data-food="something sweet">
+                            <div class="food-icon">🍰</div>
+                            <div class="food-info">
+                                <strong>Something Sweet</strong>
+                                <small>Cakes, puddings, desserts</small>
+                            </div>
+                        </button>
+                        
+                        <button class="food-btn" data-food="simple and cheap">
+                            <div class="food-icon">💰</div>
+                            <div class="food-info">
+                                <strong>Simple & Cheap</strong>
+                                <small>Budget-friendly meals</small>
+                            </div>
+                        </button>
+                        
+                        <button class="food-btn" data-food="last longer">
+                            <div class="food-icon">⏳</div>
+                            <div class="food-info">
+                                <strong>Lasts Longer</strong>
+                                <small>Good for travel</small>
+                            </div>
+                        </button>
+                        
+                        <button class="food-btn" data-food="a lot">
+                            <div class="food-icon">🍽️</div>
+                            <div class="food-info">
+                                <strong>A Lot</strong>
+                                <small>Big portions</small>
+                            </div>
+                        </button>
+                        
+                        <button class="food-btn best-offer" data-food="best offer">
+                            <div class="food-icon">🔥</div>
+                            <div class="food-info">
+                                <strong>BEST OFFER NOW</strong>
+                                <small>Limited time deal!</small>
+                            </div>
+                            <div class="offer-badge">HOT</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-list-alt"></i> Popular Items (Click to Send)</h3>
+                    <div class="menu-items">
+                        <button class="menu-item clickable" data-item="Nasi Rendang" data-price="17000">
+                            <span class="item-name">Nasi Rendang</span>
+                            <span class="item-price">Rp 17,000</span>
+                        </button>
+                        <button class="menu-item clickable" data-item="Nasi Ayam Bakar" data-price="16000">
+                            <span class="item-name">Nasi Ayam Bakar</span>
+                            <span class="item-price">Rp 16,000</span>
+                        </button>
+                        <button class="menu-item clickable" data-item="Nasi Ayam Goreng" data-price="15000">
+                            <span class="item-name">Nasi Ayam Goreng</span>
+                            <span class="item-price">Rp 15,000</span>
+                        </button>
+                        <button class="menu-item clickable" data-item="Nasi Padang Special" data-price="20000">
+                            <span class="item-name">Nasi Padang Special</span>
+                            <span class="item-price">Rp 20,000</span>
+                        </button>
+                        <button class="menu-item clickable" data-item="Nasi + Telur" data-price="18000">
+                            <span class="item-name">Nasi + Telur</span>
+                            <span class="item-price">Rp 18,000</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Admin Controls -->
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-cog"></i> Admin Controls</h3>
+                    <div class="admin-controls">
+                        <button class="admin-btn danger" id="resetChatBtn">
+                            <i class="fas fa-trash"></i>
+                            <span>Reset All Chat</span>
+                        </button>
+                        <button class="admin-btn" id="clearMessagesBtn">
+                            <i class="fas fa-broom"></i>
+                            <span>Clear Messages</span>
+                        </button>
+                        <button class="admin-btn" id="testMessageBtn">
+                            <i class="fas fa-comment"></i>
+                            <span>Send Test Message</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
